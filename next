@@ -1,0 +1,42 @@
+#!/bin/bash
+
+git config advice.detachedHead false
+
+STEP_COUNT=`cat .state/step-count`
+ERROR_COUNT=`cat .state/error-count`
+
+check_victory () {
+  CURRENT_COMMIT=`git log -1 --pretty=%B`
+  TARGET_COMMIT=`cat .state/target-commit`
+
+  if [[ "$CURRENT_COMMIT" == "$TARGET_COMMIT" ]]; then
+    echo "Victory! You can use 'git reflog' to checkout commits you've previously viewed."
+    git checkout -q main
+  else
+    ((ERROR_COUNT+=1))
+    echo "$ERROR_COUNT" > .state/error-count
+
+    echo "Not quite. Run 'git reflog' to find the ${TARGET_COMMIT} commit, use 'git checkout' to switch to it, and then run './next' again."
+  fi
+}
+
+if [[ "$STEP_COUNT" -gt 5 ]]; then
+  check_victory
+elif [[ "$STEP_COUNT" -eq 5 ]]; then
+  ((STEP_COUNT+=1))
+  echo $STEP_COUNT > .state/step-count
+
+  TARGET_COMMIT=`cat .state/target-commit`
+  echo "After reviewing the options, you've decided to go with the ${TARGET_COMMIT} Hiking Boots. Use the reflog to check out that commit and run './next' again."
+
+  git checkout -q main
+else
+  CURRENT_OPTION=$(sed -n -e "${STEP_COUNT}p" '.state/options')
+  git checkout -q ":/${CURRENT_OPTION}"
+  cat current-boot-description.md
+  ((STEP_COUNT+=1))
+  echo "$STEP_COUNT" > .state/step-count
+
+  echo -e "\n"
+  echo "Run ./next to see another hiking boot."
+fi
