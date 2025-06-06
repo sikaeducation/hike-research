@@ -1,0 +1,32 @@
+#!/bin/bash
+
+rm -rf .state
+mkdir .state
+
+touch .state/target-commit .state/step-count .state/error-count .state/options
+echo "1" > .state/step-count
+echo "0" > .state/error-count
+
+HIKING_BOOT_OPTIONS=(\
+'Ultra-Lightweight' \
+'Waterproof' \
+'Insulated' \
+'Barefoot-Style' \
+'High-Traction' \
+'Eco-Friendly' \
+'Wide-Toe' \
+'Ankle-Support' \
+)
+HIKING_BOOT_OPTIONS=( $(shuf -e "${HIKING_BOOT_OPTIONS[@]}") )
+HIKING_BOOT_OPTIONS=( "${HIKING_BOOT_OPTIONS[@]:0:5}" )
+
+for OPTION in "${HIKING_BOOT_OPTIONS[@]}"
+do
+  echo $OPTION >> .state/options
+done
+
+TARGET_OPTIONS=( $(shuf -e "${HIKING_BOOT_OPTIONS[@]}") )
+TARGET_OPTION=${TARGET_OPTIONS[0]}
+echo $TARGET_OPTION > .state/target-commit
+
+git checkout main
