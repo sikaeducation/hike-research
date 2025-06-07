@@ -35,3 +35,5 @@ for this game:
   - A _relative ref_ based on your history, such as `git checkout HEAD@{2}`.
     This will switch to the last commit you looked at, regardless of what branch
     it's on.
+
+[Game 3](https://github.com/sikaeducation/hike-plan)
