@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git config advice.statusAheadBehind false
+
 rm -rf .state
 mkdir .state
 
@@ -29,4 +31,11 @@ TARGET_OPTIONS=( $(shuf -e "${HIKING_BOOT_OPTIONS[@]}") )
 TARGET_OPTION=${TARGET_OPTIONS[0]}
 echo $TARGET_OPTION > .state/target-commit
 
-git checkout main
+git checkout -q main
+
+echo "*************"
+echo "HIKE RESEARCH"
+echo "*************"
+echo -e "\n"
+
+./next
