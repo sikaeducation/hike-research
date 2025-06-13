@@ -1,29 +1,28 @@
 # Hike Research
 
 You've just been on the worst hike of your life and decide you need to explore
-your options for a better hike next time. Look at a few different hiking boot
-options and choose the right one for your next trip.
+your options for a better hike next time. You decide to look at a few different
+hiking boot options to choose the right ones for your next trip.
 
 ## Instructions
 
-1. Clone this repository to your computer and navigate to it using your terminal
-2. Run `./start` in your terminal to begin the game. You'll be sent to a random
-   commit in the repository to learn about an item that can help you have better
-   hikes.
-3. Keep running `./next` in the terminal to see more items. After you've seen 5
-   of them, you'll be automatically sent back to the `main` branch.
-4. Use Git's `reflog` feature to navigate to the indicated commit.
-5. Run `./finish` to in your terminal to check your work!
+1. Clone this repository to your computer and navigate to it using your
+   terminal.
+2. Run `./new-game` in your terminal to begin the game. You'll be sent to a
+   random commit in the repository to learn about a different pair of boots.
+3. Follow the on-screen instructions to finish the game!
 
-If you make a mistake, run `./start` to start over.
+If you make a mistake, run `./new-game` to start over.
 
 ## Tips
 
-### Navigating the Git Reflog
+While `git log` shows the preceding commits in the current branch, `git reflog`
+shows all of the commits you've previously visited. One way to think of this is
+that everyone will see the same `git log` for a branch, but everyone's
+`git reflog` will be different. The log is the code's history; the reflog is the
+user's history.
 
-While a Git repo's `log` shows the commits that came before it, the `reflog`
-shows all of the places you've previously been. These commands will be useful
-for this game:
+These commands will be useful for this game:
 
 - `git reflog` - See a list of commits you've seen, with the most recent commit
   first
@@ -35,5 +34,17 @@ for this game:
   - A _relative ref_ based on your history, such as `git checkout HEAD@{2}`.
     This will switch to the last commit you looked at, regardless of what branch
     it's on.
+
+## Relevance
+
+The reflog is useful for lots of situations:
+
+- If you make a mistake with a destructive command like `git reset --hard`, the
+  reflog can help you find a previous version to restore.
+- When you're jumping between many different branches, the reflog acts like a
+  map of all the places you've been so you can find your way back easier.
+- Even the first 4 characters of a commit hash can be hard to remember; using
+  relative commands like `git checkout HEAD@{2}` is almost always easier.
+- The reflog remembers commits that aren't even part of a branch anymore.
 
 [Game 3](https://github.com/sikaeducation/hike-plan)
