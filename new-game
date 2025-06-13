@@ -17,7 +17,15 @@ HIKING_BOOT_OPTIONS=(\
 'Wide-Toe' \
 'Ankle-Support' \
 )
-HIKING_BOOT_OPTIONS=( $(shuf -e "${HIKING_BOOT_OPTIONS[@]}") )
+HIKING_BOOT_COUNT=${#HIKING_BOOT_OPTIONS[@]}
+for (( i = HIKING_BOOT_COUNT - 1; i > 0; i-- )); do
+    j=$(( RANDOM % (i + 1) ))
+
+    temp="${HIKING_BOOT_OPTIONS[$i]}"
+    HIKING_BOOT_OPTIONS[$i]="${HIKING_BOOT_OPTIONS[$j]}"
+    HIKING_BOOT_OPTIONS[$j]="$temp"
+done
+
 HIKING_BOOT_OPTIONS=( "${HIKING_BOOT_OPTIONS[@]:0:5}" )
 
 for OPTION in "${HIKING_BOOT_OPTIONS[@]}"
@@ -25,8 +33,15 @@ do
   echo $OPTION >> .state/options
 done
 
-TARGET_OPTIONS=( $(shuf -e "${HIKING_BOOT_OPTIONS[@]}") )
-TARGET_OPTION=${TARGET_OPTIONS[0]}
-echo $TARGET_OPTION > .state/target-commit
+TARGET_OPTION="${HIKING_BOOT_OPTIONS[1]}"
+echo "${TARGET_OPTION}"
+echo "${TARGET_OPTION}" > .state/target-commit
 
-git checkout main
+git checkout -q main
+
+echo "*************"
+echo "HIKE RESEARCH"
+echo "*************"
+echo -e "\n"
+
+./next

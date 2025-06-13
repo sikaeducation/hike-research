@@ -1,0 +1,28 @@
+#!/bin/bash
+
+HIKING_BOOT_OPTIONS=(\
+'Ultra-Lightweight' \
+'Waterproof' \
+'Insulated' \
+'Barefoot-Style' \
+'High-Traction' \
+'Eco-Friendly' \
+'Wide-Toe' \
+'Ankle-Support' \
+)
+git checkout main
+git add -A && git commit --amend --no-edit && git push -f
+
+for OPTION in "${HIKING_BOOT_OPTIONS[@]}"
+do
+  git checkout ":/${OPTION}"
+  git checkout main README.md next new-game .update
+  git add -A
+  git commit --amend --no-edit
+  git push -f origin HEAD:refs/heads/${OPTION}
+done
+
+git reflog expire --expire-unreachable=now --all
+git gc --prune=now
+
+git checkout main
