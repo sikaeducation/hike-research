@@ -1,37 +1,42 @@
 #!/bin/bash
 
-OLD_STEP_COUNT=`cat .state/step-count`
+git config advice.detachedHead false
 
-if [ $OLD_STEP_COUNT -gt 5 ]
-  check_victory
-elif [ $OLD_STEP_COUNT -eq 5 ]
-  NEW_STEP_COUNT=$OLD_STEP_COUNT + 1
-  echo $NEW_STEP_COUNT > .state/step-count
-
-  git checkout main
-else
-  CURRENT_OPTION=sed -n -e "${OLD_STEP_COUNT}p"
-  git switch $CURRENT_OPTION
-  cat current-boot-description.md
-  NEW_STEP_COUNT=$OLD_STEP_COUNT + 1
-  echo $NEW_STEP_COUNT > .state/step-count
-fi
+STEP_COUNT=`cat .state/step-count`
+ERROR_COUNT=`cat .state/error-count`
 
 check_victory () {
   CURRENT_COMMIT=`git log -1 --pretty=%B`
-  echo $CURRENT_COMMIT
   TARGET_COMMIT=`cat .state/target-commit`
-  OLD_ERROR_COUNT=`cat .state/error-count`
 
-  if [ $CURRENT_COMMIT -eq $TARGET_COMMIT ]
-    echo 'You won!'
-    if [ $OLD_ERROR_COUNT -gt 0 ]
-      echo "Finished with $OLD_ERROR_COUNT mistakes"
-    fi
+  if [[ "$CURRENT_COMMIT" == "$TARGET_COMMIT" ]]; then
+    echo "Victory! You can use 'git reflog' to checkout commits you've previously viewed."
+    git checkout -q main
   else
-    NEW_ERROR_COUNT=$OLD_ERROR_COUNT + 1
-    echo $NEW_ERROR_COUNT > .state/error-count
+    ((ERROR_COUNT+=1))
+    echo "$ERROR_COUNT" > .state/error-count
 
-    echo 'Not quite'
+    echo "Not quite. Run 'git reflog' to find the ${TARGET_COMMIT} commit, use 'git checkout' to switch to it, and then run './next' again."
   fi
 }
+
+if [[ "$STEP_COUNT" -gt 5 ]]; then
+  check_victory
+elif [[ "$STEP_COUNT" -eq 5 ]]; then
+  ((STEP_COUNT+=1))
+  echo $STEP_COUNT > .state/step-count
+
+  TARGET_COMMIT=`cat .state/target-commit`
+  echo "After reviewing the options, you've decided to go with the ${TARGET_COMMIT} Hiking Boots. Use the reflog to check out that commit and run .next again."
+
+  git checkout -q main
+else
+  CURRENT_OPTION=$(sed -n -e "${STEP_COUNT}p" '.state/options')
+  git checkout -q ":/${CURRENT_OPTION}"
+  cat current-boot-description.md
+  ((STEP_COUNT+=1))
+  echo "$STEP_COUNT" > .state/step-count
+
+  echo -e "\n"
+  echo "Run ./next to see another hiking boot."
+fi
