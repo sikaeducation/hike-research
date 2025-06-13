@@ -10,6 +10,8 @@ HIKING_BOOT_OPTIONS=(\
 'Wide-Toe' \
 'Ankle-Support' \
 )
+git checkout main
+git add -A && git commit --amend --no-edit && git push -f
 
 for OPTION in "${HIKING_BOOT_OPTIONS[@]}"
 do
@@ -17,7 +19,7 @@ do
   git checkout main README.md next new-game .update
   git add -A
   git commit --amend --no-edit
-  "git push -f origin HEAD:refs/heads/${OPTION}"
+  git push -f origin HEAD:refs/heads/${OPTION}
 done
 
 git reflog expire --expire-unreachable=now --all
