@@ -17,7 +17,7 @@ do
   git checkout main README.md next new-game .update
   git add -A
   git commit --amend --no-edit
-  "git push -f origin HEAD:refs/heads/${OPTION}"
+  git push -f origin HEAD:refs/heads/${OPTION}
 done
 
 git reflog expire --expire-unreachable=now --all
