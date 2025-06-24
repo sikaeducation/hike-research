@@ -26,7 +26,7 @@ These commands will be useful for this game:
 
 - `git reflog` - See a list of commits you've seen, with the most recent commit
   first
-- `git checkout ref-goes-here` - Switch to a different commit. In this case, a
+- `git checkout <ref_goes_here>` - Switch to a different commit. In this case, a
   _ref_ can either be:
   - At least the first 4 characters of the commit's _hash_, such as
     `git checkout a5d7`. This will switch to the commit that has a hash starting
@@ -35,7 +35,7 @@ These commands will be useful for this game:
     This will switch to the last commit you looked at, regardless of what branch
     it's on.
 
-## Relevance
+## Why this matters
 
 The reflog is useful for lots of situations:
 
@@ -47,4 +47,4 @@ The reflog is useful for lots of situations:
   relative commands like `git checkout HEAD@{2}` is almost always easier.
 - The reflog remembers commits that aren't even part of a branch anymore.
 
-[Game 3](https://github.com/sikaeducation/hike-plan)
+Game 3: [Hike Plan](https://github.com/sikaeducation/hike-plan)

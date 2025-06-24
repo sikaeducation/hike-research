@@ -27,7 +27,7 @@ elif [[ "$STEP_COUNT" -eq 5 ]]; then
   echo $STEP_COUNT > .state/step-count
 
   TARGET_COMMIT=`cat .state/target-commit`
-  echo "After reviewing the options, you've decided to go with the ${TARGET_COMMIT} Hiking Boots. Use the reflog to check out that commit and run .next again."
+  echo "After reviewing the options, you've decided to go with the ${TARGET_COMMIT} Hiking Boots. Use the reflog to check out that commit and run './next' again."
 
   git checkout -q main
 else
